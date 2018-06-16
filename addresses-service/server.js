@@ -3,12 +3,10 @@ const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-
-let bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-mongoose.connect('mongodb://192.168.1.7/gdg-address');
+mongoose.connect(`mongodb://${process.env.SERVER_URL}/gdg-address`);
 app.use(require('./routes'));
 
 /*const Cat = mongoose.model('Cat', { name: String });

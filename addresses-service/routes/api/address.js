@@ -12,6 +12,9 @@ router.get('/', (req, res) => {
     if (err) {
       return res.status(400).send(err);
     }
+    if (!result.length) {
+      return res.status(404).send();
+    }
     return res.status(200).send(result);
   });
 });
@@ -19,20 +22,24 @@ router.get('/', (req, res) => {
 // retrieve all addresses of a user, identified by userId
 router.get('/byUser/:id', (req, res) => {
   const userId = req.params.id;
+
   Address.find({ userId: userId }, (err, result) => {
     if (err) {
       return res.status(400).send(err);
+    }
+    if (!result) {
+      return res.status(404).send();
     }
     return res.status(200).send(result);
   });
 });
 
 router.post('/', (req, res) => {
-  console.log(JSON.stringify(req.body));
-  let address = new Address({
+  const address = new Address({
     userId: req.body['userId'],
     address: req.body['address']
   });
+
   address.save((err, result) => {
     if (!err) {
       res.status(200).send(JSON.stringify(result));
@@ -43,15 +50,43 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  res.send('update');
+  const id = req.params.id;
+  const newAddress = {
+    userId: req.body.userId,
+    address: req.body.address
+  };
+
+  Address.findOneAndUpdate({ _id: id }, { $set: newAddress }, { new: true }, (err, result) => {
+    if (err) {
+      return res.status(400).send(err);
+    }
+    return res.status(200).send(result);
+  });
 });
 
 router.delete('/:id', (req, res) => {
-  res.send('delete');
+  const id = req.params.id;
+
+  Address.findOneAndRemove({ _id: id }, (err, result) => {
+    if (err) {
+      return res.status(400).send(err);
+    }
+    return res.status(200).send(result);
+  });
 });
 
 router.get('/:id', (req, res) => {
-  res.send('read');
+  const addressId = req.params.id;
+
+  Address.find({ _id: addressId }, (err, result) => {
+    if (err) {
+      return res.status(400).send(err);
+    }
+    if (!result) {
+      return res.status(404).send();
+    }
+    return res.status(200).send(result);
+  });
 });
 
 module.exports = router;
