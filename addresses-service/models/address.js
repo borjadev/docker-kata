@@ -6,4 +6,4 @@ const addressSchema = new Schema({
   address: String
 });
 
-module.exports = addressSchema;
+module.exports = mongoose.model('addresses', addressSchema);

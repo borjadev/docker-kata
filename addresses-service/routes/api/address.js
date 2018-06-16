@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const address = require('../../models/address');
+const Address = require('../../models/address');
 
 // retrieve all addresses && retrieve all addresses that match a pattern (i.e. All addresses that contains "Street", or all addresses that contains "Toledo"
 router.get('/', (req, res) => {
@@ -15,7 +15,18 @@ router.get('/byUser/:id', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  res.send('create');
+  console.log(JSON.stringify(req.body));
+  let address = new Address({
+    userId: req.body['userId'],
+    address: req.body['address']
+  });
+  address.save((err, result) => {
+    if (!err) {
+      res.status(200).send(JSON.stringify(result));
+    } else {
+      res.status(400).send(JSON.stringify(err));
+    }
+  });
 });
 
 router.put('/', (req, res) => {
