@@ -28,7 +28,18 @@ router.get('/byUser/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  res.send('create');
+  console.log(JSON.stringify(req.body));
+  let address = new Address({
+    userId: req.body['userId'],
+    address: req.body['address']
+  });
+  address.save((err, result) => {
+    if (!err) {
+      res.status(200).send(JSON.stringify(result));
+    } else {
+      res.status(400).send(JSON.stringify(err));
+    }
+  });
 });
 
 router.put('/:id', (req, res) => {
