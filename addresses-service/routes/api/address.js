@@ -1,8 +1,12 @@
-const router = require('express').Router()
+const router = require('express').Router();
+const address = require('../../models/address');
 
 // retrieve all addresses && retrieve all addresses that match a pattern (i.e. All addresses that contains "Street", or all addresses that contains "Toledo"
 router.get('/', (req, res) => {
-  res.send('retrieve all addresses && retrieve all addresses that match a pattern (i.e. All addresses that contains "Street", or all addresses that contains "Toledo")');
+  address.find({}).then((result) => {
+    console.log(result);
+    res.send('retrieve all addresses && retrieve all addresses that match a pattern (i.e. All addresses that contains "Street", or all addresses that contains "Toledo")');
+  });
 });
 
 // retrieve all addresses of a user, identified by userId

@@ -1,7 +1,9 @@
-let mongoose = require('mongoose');
-let Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-let addressSchema = new Schema({
+const addressSchema = new Schema({
   userId: String,
   address: String
 });
+
+module.exports = addressSchema;
